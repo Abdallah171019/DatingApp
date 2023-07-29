@@ -28,6 +28,9 @@ public class UserService
     public async Task<AppUser> GetAsync(string id) =>
         await _user.Find(x => x.Id == id).FirstOrDefaultAsync();
 
+     public async Task<AppUser> GetAsyncUser(string username) =>
+        await _user.Find(x => x.UserName == username).FirstOrDefaultAsync();
+   
     public async Task CreateAsync(AppUser user) =>
         await _user.InsertOneAsync(user);
 
@@ -36,4 +39,9 @@ public class UserService
 
     public async Task RemoveAsync(string id) =>
         await _user.DeleteOneAsync(x => x.Id == id);
+
+    internal Task<bool> GetAsync(Func<object, object> value, object user)
+    {
+        throw new NotImplementedException();
+    }
 }

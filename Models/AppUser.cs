@@ -15,5 +15,11 @@ namespace API.Entities
         public string Id { get; set; }
         [BsonElement("username")]
         public string UserName { get; set; } = null!;
+        [BsonElement("PasswordHash")]
+        public byte[] PasswordHash{get; set;}
+        [BsonElement("PasswordSalt")]
+        public byte[] PasswordSalt { get; set; }
+
+        
     }
 }

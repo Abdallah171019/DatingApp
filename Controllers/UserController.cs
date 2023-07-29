@@ -1,13 +1,13 @@
 
 using API.Entities;
 using API.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
-    public class UserController : ControllerBase
+   [Authorize]
+    public class UserController : BaseApiController
     {
         private readonly UserService userService;
 
@@ -15,11 +15,13 @@ namespace API.Controllers
         {
             this.userService = userService;
         }
+    
         //GET 
+       [AllowAnonymous]
        [HttpGet]
         public async Task<List<AppUser>> Get() =>
         await userService.GetAsync();
-
+        
         [HttpGet("{id}")]
        
    
@@ -34,6 +36,8 @@ namespace API.Controllers
 
              return user;
         }
+        
+    
        [HttpPost]
         public async Task<IActionResult> Post(AppUser newUser)
         {
@@ -51,14 +55,12 @@ namespace API.Controllers
         {
             return NotFound();
         }
-
         updatedUser.Id = user.Id;
 
         await userService.UpdateAsync(id, updatedUser);
 
-        return NoContent();
+        return Ok(updatedUser);
     }
-
         [HttpDelete("{id}")]
          public async Task<IActionResult> Delete(string id)
     {
