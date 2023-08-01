@@ -13,8 +13,9 @@ namespace API.Extensions
                                                                           IConfiguration config){
             services.Configure<DatabaseSettings>(
             config.GetSection("MongoDB"));
-            services.AddSingleton<UserService>();
-            services.AddCors();
+            services.AddSingleton<UserService>(); /*DI container will create a single instance of that service throughout the lifetime of the application.
+                                                    Any subsequent requests for that service will receive the same instance.*/
+            services.AddCors();// To make the browser able to read the request without errors.
             services.AddScoped<ITokenService,TokenService>(); //ITokenService is added to the AddScoped for unit testing issues.
             return services;
         }

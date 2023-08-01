@@ -17,7 +17,7 @@ namespace API.Controllers
     public class AccountController : BaseApiController
     {
         private readonly UserService _user;
-        public ITokenService _tokenService { get; }
+        public   ITokenService _tokenService { get; }
         public AccountController(UserService userService, ITokenService tokenService)
         {
             _tokenService = tokenService;
@@ -28,7 +28,7 @@ namespace API.Controllers
         [HttpPost("register")] //Post : api/Account/register
         public async Task<ActionResult<UserDto>> Register(RegisterDto registerDto){
 
-            if (await UserExist(registerDto.Username)) return BadRequest("Username is taken!");
+            if (await UserExist(registerDto.Username)) return BadRequest("Username is taken!"); //400
             using var hmac = new HMACSHA512();
 
             var user = new AppUser {
@@ -52,9 +52,9 @@ namespace API.Controllers
     [HttpPost("login")]
     public async Task<ActionResult<UserDto>> Login(LoginDto loginDto){
 
-        var user = await _user.GetAsyncUser(loginDto.Username);
+        var user = await _user.GetAsyncUser(loginDto.Username); 
         
-        if (user == null) return Unauthorized("Invalid username!");
+        if (user == null) return Unauthorized("Invalid username!"); //401
         using var hmac = new HMACSHA512(user.PasswordSalt); //password key to use the same algo when typing the same password
         var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(loginDto.password));
         for(int i =0; i < computedHash.Length; i++) {
