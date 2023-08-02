@@ -1,5 +1,6 @@
 using API.Entities;
 using API.Models;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 
@@ -25,7 +26,10 @@ public class UserService
     public async Task<List<AppUser>> GetAsync() =>
         await _user.Find(_ => true).ToListAsync();
 
-    public async Task<AppUser> GetAsync(string id) =>
+    public ActionResult<AppUser> Get(string id) =>
+        _user.Find(x=>x.Id == id).FirstOrDefault();
+        
+    public async Task<AppUser> GetAsyncId(string id) =>
         await _user.Find(x => x.Id == id).FirstOrDefaultAsync();
 
      public async Task<AppUser> GetAsyncUser(string username) =>

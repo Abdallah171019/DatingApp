@@ -27,7 +27,7 @@ namespace API.Controllers
    
          public async Task<ActionResult<AppUser>> Get(string id)
          {
-             var user = await userService.GetAsync(id);
+             var user = await userService.GetAsyncId(id);
 
             if (user is null)
              {
@@ -49,7 +49,7 @@ namespace API.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(string id, AppUser updatedUser)
       {
-        var user = await userService.GetAsync(id);
+        var user = await userService.GetAsyncId(id);
 
         if (user is null)
         {
@@ -64,7 +64,7 @@ namespace API.Controllers
         [HttpDelete("{id}")]
          public async Task<IActionResult> Delete(string id)
     {
-        var user = await userService.GetAsync(id);
+        var user = await userService.GetAsyncId(id);
 
         if (user is null)
         {
