@@ -17,7 +17,7 @@ namespace API.Controllers
     public class AccountController : BaseApiController
     {
         private readonly UserService _user;
-        public   ITokenService _tokenService { get; }
+            public   ITokenService _tokenService { get; }
         public AccountController(UserService userService, ITokenService tokenService)
         {
             _tokenService = tokenService;

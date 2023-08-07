@@ -1,7 +1,10 @@
 
+using API.DTO;
 using API.Entities;
 using API.Services;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -10,21 +13,29 @@ namespace API.Controllers
     public class UserController : BaseApiController
     {
         private readonly UserService userService;
+        private readonly IMapper mapper;
 
-        public UserController(UserService userService)
+        public UserController(UserService userService , IMapper mapper)
         {
             this.userService = userService;
+            this.mapper = mapper;
         }
     
         //GET 
-       [AllowAnonymous]
        [HttpGet]
-        public async Task<List<AppUser>> Get() =>
-        await userService.GetAsync();
+        public async Task<ActionResult<List<MembersDto>>> Get() {
+         /* 
+         var user = await userService.GetAsync();
+         var userMappeds = mapper.Map<List<MembersDto>>(user);
+    
+         return Ok(userMappeds); */
+         var user = await userService.GetAsyncMembers();
+         return Ok(user);
+
+        }
         
-        [HttpGet("{id}")]
-       
-   
+        
+/*         [HttpGet("{id}")]
          public async Task<ActionResult<AppUser>> Get(string id)
          {
              var user = await userService.GetAsyncId(id);
@@ -35,9 +46,19 @@ namespace API.Controllers
              }
 
              return user;
+        } */
+        
+        [HttpGet("{username}")]
+         public async Task<ActionResult<MembersDto>> GetByUsername(string username)
+         {
+            /* var user = await userService.GetAsyncUser(username);
+            var userMapped = mapper.Map<MembersDto>(user);*/
+            var user = await userService.GetAsyncMember(username);
+
+             return Ok(user);
         }
         
-    
+       
        [HttpPost]
         public async Task<IActionResult> Post(AppUser newUser)
         {

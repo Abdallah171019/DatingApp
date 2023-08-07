@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using MongoDB.Bson.Serialization;
 
 namespace API.Extensions
 {
@@ -22,6 +23,7 @@ namespace API.Extensions
                 ValidateAudience = false
                 };
             });
+
             return services;
         }
     }
