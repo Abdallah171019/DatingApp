@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -6,7 +5,7 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace API.DTO
 {
-    public class photoDTO
+    public class PhotoDTO
     {
         
     public int ID { get; set; }

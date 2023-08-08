@@ -63,23 +63,32 @@ public class UserService : IUserRepository
         throw new NotImplementedException();
     }
 
-    public async Task<IEnumerable<MembersDto>> GetAsyncMembers() 
+    public async Task<IEnumerable<MembersDTO>> GetAsyncMembers() 
     {
     
         var user= await _user.Find(_ => true).ToListAsync();
-        var userMappeds = _mapper.Map<IEnumerable<MembersDto>>(user);
+        var userMappeds = _mapper.Map<IEnumerable<MembersDTO>>(user);
         return userMappeds;
         
     }
 
-    public async Task<MembersDto> GetAsyncMember(string username)
+    public async Task<MembersDTO> GetAsyncMember(string username)
     {
         
            var user = await _user.Find(x => x.UserName == username).SingleOrDefaultAsync();
-           var mappedUsers = _mapper.Map<MembersDto>(user);
+           var mappedUsers = _mapper.Map<MembersDTO>(user);
            return mappedUsers;
     }
 
-    
+    public async Task<bool> SaveAllAsync(AppUser updatedUser){    
 
+         var filter = Builders<AppUser>.Filter.Eq(x => x.Id, updatedUser.Id);
+        var updateResult = await _user.ReplaceOneAsync(filter, updatedUser);
+
+        return updateResult.IsAcknowledged && updateResult.ModifiedCount > 0;
+    
+    }
+    
+      
+    
 }

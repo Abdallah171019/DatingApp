@@ -12,10 +12,11 @@ namespace API.Interfaces
     Task<List<AppUser>> GetAsync();
     Task<AppUser> GetAsyncUser(string username);
     Task<bool> CheckDbContent();
+     Task<bool> SaveAllAsync(AppUser updatedUser);
     AppUser Get(string id);
     Task<AppUser> GetAsyncId(string id);
-    Task<IEnumerable<MembersDto>> GetAsyncMembers();
-    Task<MembersDto> GetAsyncMember(string username);
+    Task<IEnumerable<MembersDTO>> GetAsyncMembers();
+    Task<MembersDTO> GetAsyncMember(string username);
     Task CreateAsync(AppUser user);
     Task UpdateAsync(string id, AppUser user);
     Task RemoveAsync(string id);

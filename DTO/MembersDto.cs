@@ -6,7 +6,7 @@ using API.Entities;
 
 namespace API.DTO
 {
-    public class MembersDto
+    public class MembersDTO
     {
         public string Id { get; set; }
         public string UserName { get; set; } = null!;
@@ -21,6 +21,6 @@ namespace API.DTO
         public string City { get; set; }
         public string Country { get; set; }
         public string PhotoURL { get; set; }
-        public List<photoDTO> Photos { get; set; } 
+        public List<PhotoDTO> Photos { get; set; } 
     }
 }

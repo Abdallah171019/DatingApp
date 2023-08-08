@@ -12,11 +12,11 @@ namespace API.Helper
     {
         public AutoMapper()
         {
-            CreateMap<AppUser, MembersDto>().ForMember(dest => dest.PhotoURL ,opt => opt.MapFrom(src => src.Photos.FirstOrDefault(x => x.IsMain).URL))
+            CreateMap<AppUser, MembersDTO>().ForMember(dest => dest.PhotoURL ,opt => opt.MapFrom(src => src.Photos.FirstOrDefault(x => x.IsMain).URL))
                       .ForMember(dest => dest.Photos, opt => opt.MapFrom(src => src.Photos))  
                       .ForMember(dest =>dest.Age, opt => opt.MapFrom(src => src.DateOfBirth.CalculateAge()));
-            CreateMap<Photos,photoDTO>(); // Map ObjectId to string
-
+            CreateMap<Photos,PhotoDTO>(); // Map ObjectId to string
+            CreateMap<MemberUpdatedDTO, AppUser>();
             
         }
     }

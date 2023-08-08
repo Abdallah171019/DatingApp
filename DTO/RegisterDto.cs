@@ -4,7 +4,7 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace API.DTO
 {
-    public class RegisterDto
+    public class RegisterDTO
     {
         [Required]
         public string Username { get; set; }

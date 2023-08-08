@@ -26,7 +26,7 @@ namespace API.Controllers
         }
    
         [HttpPost("register")] //Post : api/Account/register
-        public async Task<ActionResult<UserDto>> Register(RegisterDto registerDto){
+        public async Task<ActionResult<UserDTO>> Register(RegisterDTO registerDto){
 
             if (await UserExist(registerDto.Username)) return BadRequest("Username is taken!"); //400
             using var hmac = new HMACSHA512();
@@ -37,7 +37,7 @@ namespace API.Controllers
                 PasswordSalt = hmac.Key
             };
              await _user.CreateAsync(user);
-             return new UserDto {
+             return new UserDTO {
                 Username = user.UserName,
                 Token    = _tokenService.CreateToken(user)
              };
@@ -50,17 +50,17 @@ namespace API.Controllers
         }
     
     [HttpPost("login")]
-    public async Task<ActionResult<UserDto>> Login(LoginDto loginDto){
+    public async Task<ActionResult<UserDTO>> Login(LoginDTO LoginDTO){
 
-        var user = await _user.GetAsyncUser(loginDto.Username); 
+        var user = await _user.GetAsyncUser(LoginDTO.Username); 
         
         if (user == null) return Unauthorized("Invalid username!"); //401
         using var hmac = new HMACSHA512(user.PasswordSalt); //password key to use the same algo when typing the same password
-        var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(loginDto.password));
+        var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(LoginDTO.password));
         for(int i =0; i < computedHash.Length; i++) {
             if(computedHash[i] != user.PasswordHash[i] ) return Unauthorized("Invalid Password");
         }
-        return new UserDto{
+        return new UserDTO{
             Username = user.UserName,
             Token    = _tokenService.CreateToken(user)
         };

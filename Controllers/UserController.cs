@@ -1,4 +1,5 @@
 
+using System.Security.Claims;
 using API.DTO;
 using API.Entities;
 using API.Services;
@@ -23,7 +24,7 @@ namespace API.Controllers
     
         //GET 
        [HttpGet]
-        public async Task<ActionResult<List<MembersDto>>> Get() {
+        public async Task<ActionResult<List<MembersDTO>>> Get() {
          /* 
          var user = await userService.GetAsync();
          var userMappeds = mapper.Map<List<MembersDto>>(user);
@@ -49,7 +50,7 @@ namespace API.Controllers
         } */
         
         [HttpGet("{username}")]
-         public async Task<ActionResult<MembersDto>> GetByUsername(string username)
+         public async Task<ActionResult<MembersDTO>> GetByUsername(string username)
          {
             /* var user = await userService.GetAsyncUser(username);
             var userMapped = mapper.Map<MembersDto>(user);*/
@@ -66,7 +67,7 @@ namespace API.Controllers
 
             return CreatedAtAction(nameof(Get), new { id = newUser.Id }, newUser);
         }
-
+/* 
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(string id, AppUser updatedUser)
       {
@@ -81,7 +82,24 @@ namespace API.Controllers
         await userService.UpdateAsync(id, updatedUser);
 
         return Ok(updatedUser);
-    }
+    } */
+
+        [HttpPut]
+        public async Task<IActionResult> Update(MemberUpdatedDTO memberUpdatedDTO)
+      {
+      
+        var username = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var user = await userService.GetAsyncUser(username);
+        if (user == null) return NotFound();
+        mapper.Map(memberUpdatedDTO,user);
+        if (await userService.SaveAllAsync(user)) return NoContent();
+        return BadRequest("Failed to update user");
+    } 
+
+
+        
+
+
         [HttpDelete("{id}")]
          public async Task<IActionResult> Delete(string id)
     {
